@@ -23,8 +23,13 @@
 #     scored.
 #   * output_tokens includes the model's reasoning tokens (reported separately
 #     by the agent SDK), so uncached_input + cached_input + output = total_tokens.
-#   * Cost is shown as "-" because the model was served from self-managed
-#     infrastructure, so no vendor list price applies.
+#   * Cost is shown as "-" (0.0) because inference was served through a
+#     self-managed LiteLLM proxy whose API key was provided by the DevRev team
+#     for this community run, so no cost is attributed to the submitter. For
+#     transparency, at Baseten's published list prices (input $1.40/M, cached
+#     input $0.14/M, output $4.40/M) the agent-model inference for these 140
+#     trials is $22.52 (7.05M uncached input, 53.71M cached input, 1.17M
+#     output). Judge (gpt-5) tokens are not included in those counts.
 
 rows:
 - metadata:
