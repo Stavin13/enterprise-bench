@@ -1,50 +1,52 @@
-# OpenCode / GLM-5.3
+# OpenCode / GLM-5.3 (LiteLLM → Baseten)
 # Source job: a50f884f-7ac2-4e7b-8662-dc0a929fe494
 # https://hub.harborframework.com/jobs/a50f884f-7ac2-4e7b-8662-dc0a929fe494
 #
-# The main job holds 134 scored trials plus 6 trials that errored during agent
-# setup and produced no reward. Those 5 tasks were re-run; the re-run jobs
-# (public) supply the 6 replacement trials used here:
-#   https://hub.harborframework.com/jobs/1a34df2c-4e0d-46d4-b7cb-d7af6ca88b7a  (eng-l1-a, 1)
-#   https://hub.harborframework.com/jobs/decb41a5-2258-4af6-81df-15b16af64df1  (eng-l1-b, 1)
-#   https://hub.harborframework.com/jobs/f1c84133-c42b-4086-9a0e-e9a1e853ccd8  (eng-l1-c, 2)
-#   https://hub.harborframework.com/jobs/779a613d-f400-4195-bfe2-861b5b04c1dd  (eng-l2-a, 1)
-#   https://hub.harborframework.com/jobs/95ebde28-c888-450b-9d0b-3760653ed1ff  (sales-l2-c, 1)
+# The main job holds 140 trials: 135 scored by the judge, plus 5 that died
+# during agent setup and produced no reward. Those 5 setup failures were
+# re-run; the re-run jobs (public) supply the 5 replacement trials used here:
+#   https://hub.harborframework.com/jobs/1a34df2c-4e0d-46d4-b7cb-d7af6ca88b7a  (eng-l1-a)
+#   https://hub.harborframework.com/jobs/decb41a5-2258-4af6-81df-15b16af64df1  (eng-l1-b)
+#   https://hub.harborframework.com/jobs/f1c84133-c42b-4086-9a0e-e9a1e853ccd8  (eng-l1-c, 2 trials)
+#   https://hub.harborframework.com/jobs/779a613d-f400-4195-bfe2-861b5b04c1dd  (eng-l2-a)
+#
+# The 5 setup failures were Node/nvm downloads from nodejs.org that failed or
+# timed out inside the agent container before the model ran. No trial that the
+# judge scored was removed or re-rolled: in particular sales-l2-c__2FxjeYy
+# (AgentTimeoutError at the 600 s budget, judge reward 0) stays in the set.
+# A repair re-run of sales-l2-c was uploaded but is not used here.
 #
 # Agent: OpenCode 1.19.3 (harbor v0.24.0 built-in opencode agent)
-# Model: GLM-5.3 (zai-org/GLM-5.3), served through a self-managed LiteLLM proxy
+# Model: GLM-5.3 (zai-org/GLM-5.3) on Baseten, reached through a self-managed
+#        LiteLLM proxy; the API key was provided by the DevRev team.
 # Judge: gpt-5 via the same proxy
 # Dataset: Enterprise-Bench/l1-l2-bench@latest
 # Command: harbor run -p . -a opencode -m "litellm/baseten/zai-org/GLM-5.3" \
 #            --mcp-config mcp.json -k 10 -n 3 --yes
 # Notes:
-#   * The 6 setup failures were Node/nvm downloads from nodejs.org that failed
-#     or timed out inside the agent container; no trial was removed after being
-#     scored.
 #   * output_tokens includes the model's reasoning tokens (reported separately
 #     by the agent SDK), so uncached_input + cached_input + output = total_tokens.
-#   * Cost is shown as "-" (0.0) because inference was served through a
-#     self-managed LiteLLM proxy whose API key was provided by the DevRev team
-#     for this community run, so no cost is attributed to the submitter. For
-#     transparency, at Baseten's published list prices (input $1.40/M, cached
-#     input $0.14/M, output $4.40/M) the agent-model inference for these 140
-#     trials is $22.52 (7.05M uncached input, 53.71M cached input, 1.17M
-#     output). Judge (gpt-5) tokens are not included in those counts.
+#   * Cost is the agent-model inference for these 140 trials at Baseten's
+#     published list prices (input $1.40/M, cached input $0.14/M, output
+#     $4.40/M): $22.37 for 7,010,206 uncached input, 53,225,088 cached input and
+#     1,160,849 output tokens. No cost is attributed to the submitter because the
+#     API key was provided by the DevRev team. Judge (gpt-5) tokens are not
+#     included in those counts.
 
 rows:
 - metadata:
     agent_display_name: OpenCode
-    model_display_name: GLM-5.3
+    model_display_name: GLM-5.3 (LiteLLM → Baseten)
     agent_org_display_name: Anomaly
     model_org_display_name: Z.ai
   metrics:
-    accuracy: 71.43
-    display_accuracy: "71.4%"
-    uncached_input_tokens: 7049798
-    cached_input_tokens: 53713280
-    output_tokens: 1165749
-    total_tokens: 61928827
-    avg_trial_duration_sec: 191.44
+    accuracy: 70.71
+    display_accuracy: 70.7%
+    uncached_input_tokens: 7010206
+    cached_input_tokens: 53225088
+    output_tokens: 1160849
+    total_tokens: 61396143
+    avg_trial_duration_sec: 195.12
     pass_at_2: 0.7841
     pass_at_3: 0.8161
     pass_at_4: 0.8378
@@ -52,8 +54,8 @@ rows:
     pass_at_8: 0.9
     pass_at_10: 0.9286
     n_trials: 140
-    total_cost_usd: 0.0
-    display_total_cost_usd: "-"
+    total_cost_usd: 22.37
+    display_total_cost_usd: $22.37
   status: display
   trial_ids:
   - 79cb7be5-51ae-4720-b538-f4aea2b4a5d4
@@ -136,6 +138,7 @@ rows:
   - a58ceaf1-c317-49ee-a2c5-1363dbebfef5
   - 9da5f10f-7519-4cd9-9442-38a959a392d0
   - 29ed9d75-2850-4519-8a49-1b30d93f7923
+  - bd61cee1-ed02-46e4-b71b-9abb080ae817
   - b8d0bb93-5f62-4ccc-96d1-691feb0e3bbc
   - c6668077-9d03-49be-9b47-eaeb7999a977
   - 8933602c-4a9e-4316-9d5f-4e3c5e5cd76b
@@ -145,7 +148,6 @@ rows:
   - 2e212b52-636e-450a-94d3-b737894a59bc
   - fe3364cf-d753-4d5a-bbf0-90b8b49dfc5b
   - f9d76078-5634-4e89-8323-55f5c1ff5f0e
-  - 691654a1-89a9-4dd6-b9a5-99de5fcd0ea8
   - 1f262c9d-e950-4c47-b16b-ad4b74a985a9
   - a5a330d2-ff7a-4362-9f23-ecaac39a0a4c
   - eb86de28-0da6-4c26-987c-dada9fd88b99
